@@ -2,6 +2,21 @@
 
 #include <opencv2/opencv.hpp>
 
+cv::Mat3b QImage2Mat(const QImage &src) {
+    unsigned int height = src.height();
+    unsigned int width = src.width();
+    
+    cv::Mat3b dest(height, width);
+    for (unsigned int y = 0; y < height; ++y) {
+        cv::Vec3b *destrow = dest[y];
+        for (unsigned int x = 0; x < width; ++x) {
+            QRgb pxl = src.pixel(x, y);
+            destrow[x] = cv::Vec3b(qBlue(pxl), qGreen(pxl), qRed(pxl));
+        }
+    }
+    return dest;
+}
+
 QThread *ICapturer::beginReadNext() {
     ReadThread *rt = new ReadThread(this);
     rt->start();
