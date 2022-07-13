@@ -1,6 +1,6 @@
 #include "Capture.h"
 
-#include <opencv2/opencv.hpp>
+#include <opencv4/opencv2/opencv.hpp>
 
 cv::Mat3b QImage2Mat(const QImage &src) {
     unsigned int height = src.height();
@@ -63,7 +63,7 @@ bool VideoCapture::readNext()
     cv::Mat mat;
     if(!this->_pimpl->_cap->read(mat))
         return false;
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
+    cv::cvtColor(mat, mat, cv::COLOR_BGR2RGB);
     this->_pimpl->_currentFrame = QImage((uchar*) mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
 
     this->_pimpl->_frame++;
@@ -77,17 +77,17 @@ long VideoCapture::frame()
 
 long VideoCapture::frameCount() const
 {
-    return (long)this->_pimpl->_cap->get(CV_CAP_PROP_FRAME_COUNT);
+    return (long)this->_pimpl->_cap->get(cv::CAP_PROP_FRAME_COUNT);
 }
 
 int VideoCapture::getFPS() const
 {
-    return (int)this->_pimpl->_cap->get(CV_CAP_PROP_FPS);
+    return (int)this->_pimpl->_cap->get(cv::CAP_PROP_FPS);
 }
 
 void VideoCapture::reset()
 {
-    this->_pimpl->_cap->set(CV_CAP_PROP_POS_AVI_RATIO, 0);
+    this->_pimpl->_cap->set(cv::CAP_PROP_POS_AVI_RATIO, 0);
     this->_pimpl->_frame = 0;
 }
 
@@ -101,9 +101,9 @@ CameraCapture::CameraCapture(qint32 cam_index, qint32 w, qint32 h, qint32 fps) {
     this->_pimpl = new CameraCapture::pimpl();
     this->_pimpl->_frame = -1;
     this->_pimpl->_cap = new cv::VideoCapture(cam_index);
-    this->_pimpl->_cap->set(CV_CAP_PROP_FRAME_WIDTH, (int)w);
-    this->_pimpl->_cap->set(CV_CAP_PROP_FRAME_HEIGHT, (int)h);
-    this->_pimpl->_cap->set(CV_CAP_PROP_FPS, (int)fps);
+    this->_pimpl->_cap->set(cv::CAP_PROP_FRAME_WIDTH, (int)w);
+    this->_pimpl->_cap->set(cv::CAP_PROP_FRAME_HEIGHT, (int)h);
+    this->_pimpl->_cap->set(cv::CAP_PROP_FPS, (int)fps);
 }
 
 CameraCapture::~CameraCapture()
@@ -122,7 +122,7 @@ bool CameraCapture::readNext()
     cv::Mat mat;
     if(!this->_pimpl->_cap->read(mat))
         return false;
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
+    cv::cvtColor(mat, mat, cv::COLOR_BGR2RGB);
     this->_pimpl->_currentFrame = QImage((uchar*) mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
 
     this->_pimpl->_frame++;

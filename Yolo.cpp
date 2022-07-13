@@ -159,11 +159,11 @@ void Yolo::paintDetections(QImage *image, const QVector<Detection> &detections){
         painter.setPen(pen);
         painter.drawRect(rect);
         QFont font = painter.font();
-        font.setWeight(100);
+        font.setWeight(QFont::Thin);
         font.setPixelSize(24);
         QFontMetrics fm(font);
         QString label = detections[i].labelString();
-        fm.width(label);
+        fm.horizontalAdvance(label);
         int hd = fm.height();
         painter.setFont(font);
         pen.setColor(QColor::fromRgb(0, 255, 255));
